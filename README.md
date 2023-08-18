@@ -1,15 +1,38 @@
 ## When to use Event Emitter
-Whenever it makes sense for code to SUBSCRIBE to something rather than get a callback from something. The typical use case would be that there's multiple blocks of code in your application that may need to do something when an event happens.
-
-For example, let's say you are creating a ticketing system. The common way to handle things might be like this:
+A basic event emitter and example how to use it
 
 ```
 function addTicket(ticket, callback) {
-    insertTicketIntoDatabase(ticket, function(err) {
-        if (err)
-            return handleError(err);
+    insertToDb(ticket);
+    sendEmail(ticket);
+    sendSms(ticket);
+    callback();
+}
+```
 
-        callback();
-    });
+but with event we can short it with this way:
+```
+# email sent
+# sms sent
+# Success to buy ticket
+function buyTicket(ticket, callback) {
+    // insert to database
+    ticketEvent.emit('inserted', ticket);
+    callback();
+}
+
+```
+
+asynchronus way: 
+```
+# Success to buy ticket
+# email sent
+# sms sent
+function buyTicket(ticket, callback) {
+  // insert to database
+  setTimeout(() => {
+    ticketEvent.emit('inserted', ticket);
+  });
+  callback();
 }
 ```
