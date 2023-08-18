@@ -1,4 +1,4 @@
-## When to use Event Emitter
+## Event Emitter
 A basic event emitter and example how to use it
 
 ```
